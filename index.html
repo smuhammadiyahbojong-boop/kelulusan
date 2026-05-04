@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pengumuman Kelulusan</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 50px; }
+    #result { margin-top: 20px; padding: 20px; border: 1px solid #ccc; display: none; }
+  </style>
+</head>
+<body>
+
+  <h2>Pengumuman Kelulusan Siswa Kelas XII</h2>
+  <div id="login-form">
+    <input type="text" id="nisn" placeholder="Masukkan NISN">
+    <button onclick="cekKelulusan()">Cek Kelulusan</button>
+  </div>
+
+  <div id="result">
+    <h3 id="nama"></h3>
+    <p>Jurusan: <span id="jurusan"></span></p>
+    <h2 id="status"></h2>
+  </div>
+
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyu-cq_NLAkBlv-8ERQ0LFPEfhLl9j9WlCKhy513P6wx9Zl0lB6VGI5pkSH-4p9Pjaf/exec";
+
+    function cekKelulusan() {
+      const nisn = document.getElementById('nisn').value;
+      fetch(`${SCRIPT_URL}?nisn=${nisn}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === "found") {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('nama').innerText = data.nama;
+            document.getElementById('jurusan').innerText = data.jurusan;
+            document.getElementById('status').innerText = data.statusLulus;
+          } else {
+            alert("Data tidak ditemukan!");
+          }
+        });
+    }
+  </script>
+</body>
+</html>
